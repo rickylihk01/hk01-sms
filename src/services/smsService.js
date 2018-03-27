@@ -3,7 +3,7 @@ const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWI
 
 const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
 
-async function send({ to, body }) {
+function send({ to, body }) {
   return client.messages.create({ to, body, messagingServiceSid });
 }
 

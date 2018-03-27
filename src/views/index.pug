@@ -1,0 +1,17 @@
+html
+  head
+    title Send SMS Service
+    link(rel='stylesheet' href='../../bower_components/bootstrap/dist/css/bootstrap.css')
+  body
+    .container
+      p.h4.text-center.mb-4 Send SMS by Twilio
+      #container.col
+        form(method='POST', action='sms', enctype='application/json')
+          .form-group
+            label(for='exampleFormControlInput1') To phones
+            textarea#exampleFormControlTextarea1.form-control(name='to', rows='5', placeholder='+85298765432\n+85223456789\n...')
+            br
+          .form-group
+            label(for='exampleFormControlTextarea1') Message body
+            textarea#exampleFormControlTextarea1.form-control(name='body', rows='10', placeholder='Enter your message content here...')
+          button.btn.btn-primary(type='submit') Submit

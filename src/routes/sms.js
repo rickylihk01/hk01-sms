@@ -7,9 +7,16 @@ const bodyParser = require('body-parser');
 
 const jsonParser = bodyParser.json();
 
+// remove and triming whitespace and split each row value into array
+function normalize(recipients) {
+  return recipients.replace(/([ \t])/g, '').trim().split('\r\n');
+}
+
+// send sms request
 router.post('/', jsonParser, async (req, res) => {
   console.log(req.body);
-  const { recipients, body } = req.body;
+  const { to, body } = req.body;
+  const recipients = normalize(to);
   try {
     const msgs = await smsService.sendAsync({ recipients, body });
     res.send(msgs);
@@ -17,6 +24,11 @@ router.post('/', jsonParser, async (req, res) => {
     console.error(err);
     throw new error.RequestValidationError(err);
   }
+});
+
+// render sms page
+router.get('/', (req, res) => {
+  res.render('index');
 });
 
 module.exports = router;

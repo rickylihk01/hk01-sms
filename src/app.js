@@ -4,12 +4,18 @@ const env = require('dotenv').config();
 if (env.error) {
   throw env.error;
 }
-
+const path = require('path');
 const bodyParser = require('body-parser');
 const error = require('./error/error');
 const sms = require('./routes/sms');
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// set public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
