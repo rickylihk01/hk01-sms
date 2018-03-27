@@ -31,6 +31,12 @@ class RequestValidationError extends BaseError {
   }
 }
 
+class SmsDeliveryFailedError extends BaseError {
+  constructor(message) {
+    super(400, 10003, `Fail to deliver sms:${message}`);
+  }
+}
+
 class UnknownServerError extends BaseError {
   constructor(message) {
     super(500, 10101, message);
@@ -42,4 +48,5 @@ module.exports = {
   ResourceNotFoundError,
   UnknownServerError,
   RequestValidationError,
+  SmsDeliveryFailedError,
 };

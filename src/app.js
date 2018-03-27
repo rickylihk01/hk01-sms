@@ -4,21 +4,27 @@ const env = require('dotenv').config();
 if (env.error) {
   throw env.error;
 }
+
 const path = require('path');
 const bodyParser = require('body-parser');
+const { logger } = require('./util/logger');
 const error = require('./error/error');
 const sms = require('./routes/sms');
 
 const app = express();
 
+// set views folder for tempale engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// set public folder
+// set public folder for Bootstrap
 app.use(express.static(path.join(__dirname, 'public')));
 
+// body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// api routes
 app.use('/api/v1/sms', sms);
 
 // catch 404 and forward to error handler
@@ -30,10 +36,10 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   let e = null;
   if (err && err instanceof error.BaseError) {
-    console.log('known error - %s', err);
+    logger.warn(`known error - ${err}`);
     e = err;
   } else {
-    console.log('unknown server error - %s', err);
+    logger.warn(`unknown server error - ${err}`);
     e = new error.UnknownServerError(err.toString());
   }
   res.status(e.statusCode).json(e.toJson());

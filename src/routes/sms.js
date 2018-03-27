@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+const { logger } = require('../util/logger');
 const smsService = require('../services/smsService');
 const error = require('../error/error');
 const bodyParser = require('body-parser');
@@ -13,16 +14,16 @@ function normalize(recipients) {
 }
 
 // send sms request
-router.post('/', jsonParser, async (req, res) => {
-  console.log(req.body);
+router.post('/', jsonParser, async (req, res, next) => {
+  logger.debug('req.body');
   const { to, body } = req.body;
   const recipients = normalize(to);
   try {
     const msgs = await smsService.sendAsync({ recipients, body });
+    logger.debug('Success - message is delivered');
     res.send(msgs);
   } catch (err) {
-    console.error(err);
-    throw new error.RequestValidationError(err);
+    next(new error.SmsDeliveryFailedError(err));
   }
 });
 

@@ -6,7 +6,7 @@ html
     .container
       p.h4.text-center.mb-4 Send SMS by Twilio
       #container.col
-        form(method='POST', action='sms', enctype='application/json')
+        form(method='POST', action='/api/v1/sms', enctype='application/json')
           .form-group
             label(for='exampleFormControlInput1') To phones
             textarea#exampleFormControlTextarea1.form-control(name='to', rows='5', placeholder='+85298765432\n+85223456789\n...')
